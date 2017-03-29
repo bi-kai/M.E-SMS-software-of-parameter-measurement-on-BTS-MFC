@@ -836,27 +836,20 @@ void CDuanxinDlg::OnDestroy()
 void CDuanxinDlg::splitMessage()//对每条信息的核心内容的处理
 {
 	CString divide_flag;
-	int pos1=0,message_counter1=0,p1=0;//信息中段的个数
+	int pos1=0,p1=0;//信息中段的个数
 	CStringArray s_message1;//每条信息的内容以加号区分，存储区分出来的每段的信息
 	divide_flag.Format("%c",'\053');
 //	m_clistbox.InsertString(0,message_data);
 	int rightmessage_flag=0;
 	bool CID_exist_flag=0;//CID码是否存在于列表中的标志位
+	int lock_num=0;//不是垃圾短信标志位
 	while(1)
 	{
 	pos1=message_data.Find(divide_flag);
 	if (pos1>=0)//前14个分段//if ((pos1>0)||(p1<14))//前14个分段
 	{
-//		if (message_data.Left(pos1).IsEmpty())
-//		{
-//			message_data=message_data.Mid(pos1+1);
-//			continue;
-//		}
-		
-		
 		s_message1.Add(message_data.Left(pos1));
 		message_data=message_data.Mid(pos1+1);
-		//AfxMessageBox(s_message1.GetAt(message_counter1));
 		if (p1==0)
 		{
 			
@@ -878,98 +871,139 @@ void CDuanxinDlg::splitMessage()//对每条信息的核心内容的处理
 				m_clistbox.InsertString(0,s_message1.GetAt(p1));
 			rightmessage_flag+=1;//处理掉垃圾短信
 		}
-		else if (p1==1)
+		else 
 		{
-			m_cscs_bsic=s_message1.GetAt(p1);
-			rightmessage_flag+=1;//处理掉垃圾短信
+			if ((s_message1.GetAt(p1)=="1")||(lock_num==1))
+			{
+				if (lock_num!=1)
+				{
+					lock_num=1;
+					p1++;
+					continue;
+				}
+				
+				if (p1==2)
+				{
+					m_cscs_bsic=s_message1.GetAt(p1);
+					rightmessage_flag+=1;//处理掉垃圾短信
+				}
+				else if (p1==3)
+				{
+					m_cscs_txgg=s_message1.GetAt(p1);//m_cscs_lac
+					rightmessage_flag+=1;//处理掉垃圾短信
+				} 
+				else if(p1==4)
+				{
+					m_cscs_hbdp=s_message1.GetAt(p1);//m_cscs_pd
+					rightmessage_flag+=1;//处理掉垃圾短信
+				}
+				else if (p1==5)
+				{
+					m_cscs_dmhb=s_message1.GetAt(p1);//m_cscs_jd
+					rightmessage_flag=101;//处理掉垃圾短信，数值自取，提高抗干扰性能
+				}
+				
+			} 
+			else if((s_message1.GetAt(p1)=="2")||(lock_num==2))
+			{
+				if (lock_num!=2)
+				{
+					lock_num=2;
+					p1++;
+					continue;
+				}
+				
+				if (p1==2)
+				{
+					m_cscs_qbdp=s_message1.GetAt(p1);//m_cscs_fxj
+					rightmessage_flag+=1;//处理掉垃圾短信
+				}
+				else if (p1==3)
+				{
+					m_cscs_fxj=s_message1.GetAt(p1);//m_cscs_qj
+					rightmessage_flag+=1;//处理掉垃圾短信
+				}
+				else if (p1==4)
+				{
+					m_cscs_txhb=s_message1.GetAt(p1);//m_cscs_hgj
+					rightmessage_flag+=1;//处理掉垃圾短信
+				}
+				else if (p1==5)
+				{
+					m_cscs_lac=s_message1.GetAt(p1);//m_cscs_dmhb
+					rightmessage_flag+=1;//处理掉垃圾短信
+				}
+				else if (p1==6)
+				{
+					m_cscs_wd=s_message1.GetAt(p1);//m_cscs_txhb
+					rightmessage_flag=102;//处理掉垃圾短信，数值自取，提高抗干扰性能
+				}
+			
+			}
+			else if ((s_message1.GetAt(p1)=="3")||(lock_num==3))
+			{
+				if (lock_num!=3)
+				{
+					lock_num=3;
+					p1++;
+					continue;
+				}
+
+				if (p1==2)
+				{
+					m_cscs_jd=s_message1.GetAt(p1);//m_cscs_qbdp
+					rightmessage_flag+=1;//处理掉垃圾短信
+				}
+				else if (p1==3)
+				{
+					m_cscs_qj=s_message1.GetAt(p1);//m_cscs_hbdp
+					rightmessage_flag+=1;//处理掉垃圾短信
+				}
+				else if (p1==4)
+				{
+					m_cscs_hgj=s_message1.GetAt(p1);
+					rightmessage_flag+=1;//处理掉垃圾短信
+				}
+				else if (p1==5)
+				{
+					m_cscs_xhqd=s_message1.GetAt(p1);
+					rightmessage_flag=103;//处理掉垃圾短信，数值自取，提高抗干扰性能
 		}
-		else if (p1==2)
-		{
-			m_cscs_txgg=s_message1.GetAt(p1);//m_cscs_lac
-			rightmessage_flag+=1;//处理掉垃圾短信
-		} 
-		else if(p1==3)
-		{
-			m_cscs_hbdp=s_message1.GetAt(p1);//m_cscs_pd
-			rightmessage_flag+=1;//处理掉垃圾短信
-		}
-		else if (p1==4)
-		{
-			m_cscs_dmhb=s_message1.GetAt(p1);//m_cscs_jd
-			rightmessage_flag+=1;//处理掉垃圾短信
-		}
-		else if (p1==5)
-		{
-			m_cscs_pd=s_message1.GetAt(p1);//m_cscs_wd
-			rightmessage_flag+=1;//处理掉垃圾短信
-		}
-		else if (p1==6)
-		{
-			m_cscs_qbdp=s_message1.GetAt(p1);//m_cscs_fxj
-			rightmessage_flag+=1;//处理掉垃圾短信
-		}
-		else if (p1==7)
-		{
-			m_cscs_fxj=s_message1.GetAt(p1);//m_cscs_qj
-			rightmessage_flag+=1;//处理掉垃圾短信
-		}
-		else if (p1==8)
-		{
-			m_cscs_txhb=s_message1.GetAt(p1);//m_cscs_hgj
-			rightmessage_flag+=1;//处理掉垃圾短信
-		}
-		else if (p1==9)
-		{
-			m_cscs_lac=s_message1.GetAt(p1);//m_cscs_dmhb
-			rightmessage_flag+=1;//处理掉垃圾短信
-		}
-		else if (p1==10)
-		{
-			m_cscs_wd=s_message1.GetAt(p1);//m_cscs_txhb
-			rightmessage_flag+=1;//处理掉垃圾短信
-		}
-		else if (p1==11)
-		{
-			m_cscs_dpbz=s_message1.GetAt(p1);//m_cscs_txgg
-			rightmessage_flag+=1;//处理掉垃圾短信
-		}
-		else if (p1==12)
-		{
-			m_cscs_jd=s_message1.GetAt(p1);//m_cscs_qbdp
-			rightmessage_flag+=1;//处理掉垃圾短信
-		}
-		else if (p1==13)
-		{
-			m_cscs_qj=s_message1.GetAt(p1);//m_cscs_hbdp
-			rightmessage_flag+=1;//处理掉垃圾短信
-		}
-		else if (p1==14)
-		{
-			m_cscs_hgj=s_message1.GetAt(p1);
-			rightmessage_flag+=1;//处理掉垃圾短信
-		}
-		else if (p1==15)
-		{
-			m_cscs_xhqd=s_message1.GetAt(p1);
-			rightmessage_flag+=1;//处理掉垃圾短信
+			}
 		}
 
-		message_counter1++;
 		p1++;
 	}
-	else if(rightmessage_flag==16)//最后一个分段
+	else if((rightmessage_flag==101)&&(lock_num==1))//最后一个分段
+	{
+		s_message1.Add(message_data);
+		m_cscs_pd=s_message1.GetAt(p1);
+//		UpdateData(FALSE);//人工查看，不要自动刷新数值
+		p1++;
+		saveMessage();//保存本次收到的信息
+		break;
+	}
+	else if((rightmessage_flag==102)&&(lock_num==2))//最后一个分段
+	{
+		s_message1.Add(message_data);
+		m_cscs_dpbz=s_message1.GetAt(p1);
+		//		UpdateData(FALSE);//人工查看，不要自动刷新数值
+		p1++;
+		saveMessage();//保存本次收到的信息
+		break;
+	}
+	else if((rightmessage_flag==103)&&(lock_num==3))//最后一个分段
 	{
 		s_message1.Add(message_data);
 		m_cscs_ratio=s_message1.GetAt(p1);
-//		UpdateData(FALSE);//人工查看，不要自动刷新数值
-		message_counter1++;
+		//		UpdateData(FALSE);//人工查看，不要自动刷新数值
 		p1++;
 		saveMessage();//保存本次收到的信息
 		break;
 	}
 	else
 	{
-		AfxMessageBox("Received a garbage message!",MB_OK,0);
+		AfxMessageBox("收到了无关短信息!",MB_OK,0);
 		break;
 	}
 	}//end of while(1)
