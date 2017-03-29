@@ -6,7 +6,7 @@
 --------------------Configuration: duanxin - Win32 Release--------------------
 </h3>
 <h3>Command Lines</h3>
-Creating temporary file "C:\DOCUME~1\ADMINI~1\LOCALS~1\Temp\RSP1F0.tmp" with contents
+Creating temporary file "C:\Users\idol\AppData\Local\Temp\RSP3EBC.tmp" with contents
 [
 SkinPPWTL.lib /nologo /subsystem:windows /incremental:no /pdb:"Release/duanxin.pdb" /machine:I386 /out:"Release/duanxin.exe" 
 .\Release\_smsgate2.obj
@@ -20,7 +20,7 @@ SkinPPWTL.lib /nologo /subsystem:windows /incremental:no /pdb:"Release/duanxin.p
 .\Release\StdAfx.obj
 .\Release\duanxin.res
 ]
-Creating command line "link.exe @C:\DOCUME~1\ADMINI~1\LOCALS~1\Temp\RSP1F0.tmp"
+Creating command line "link.exe @C:\Users\idol\AppData\Local\Temp\RSP3EBC.tmp"
 <h3>Output Window</h3>
 Linking...
 

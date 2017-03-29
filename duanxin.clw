@@ -37,7 +37,7 @@ Type=0
 BaseClass=CDialog
 HeaderFile=duanxinDlg.h
 ImplementationFile=duanxinDlg.cpp
-LastObject=IDC_EDIT27
+LastObject=IDC_EDIT1
 Filter=D
 VirtualFilter=dWC
 
