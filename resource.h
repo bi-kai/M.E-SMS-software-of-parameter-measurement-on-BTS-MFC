@@ -65,6 +65,8 @@
 #define IDC_BUTTON9                     1074
 #define IDC_COMBO_COMSELECT             1075
 #define IDC_EDIT37                      1076
+#define IDC_EDIT38                      1079
+#define IDC_EDIT39                      1080
 
 // Next default values for new objects
 // 

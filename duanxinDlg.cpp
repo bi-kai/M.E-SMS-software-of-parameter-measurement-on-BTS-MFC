@@ -169,7 +169,7 @@ void CDuanxinDlg::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_COM_OPENOFF, m_com_openoff);
 	DDX_Control(pDX, IDC_COMBO_COMSELECT, m_comport);
 	DDX_Control(pDX, IDC_LIST1, m_clistbox);
-//	DDX_Control(pDX, IDC_SMSGATE1, m_smsgate_1);
+	DDX_Control(pDX, IDC_SMSGATE1, m_smsgate_1);
 	DDX_Text(pDX, IDC_EDIT12, m_cscs_bsic);
 	DDX_Text(pDX, IDC_EDIT11, m_cscs_cid);
 	DDX_Text(pDX, IDC_EDIT10, m_cscs_lac);
@@ -278,10 +278,10 @@ BOOL CDuanxinDlg::OnInitDialog()
 // 	 s_wait_time=m_smsgate_1.Connect(&waittime);
 
 //	m_smsgate_1.SetCommPort(1);
-//	m_smsgate_1.SetSmsService("+8613800290500");
-//	m_smsgate_1.SetSettings("9600,n,8,1");
+	m_smsgate_1.SetSmsService("+8613800290500");
+	m_smsgate_1.SetSettings("9600,n,8,1");
 //	m_smsgate_1.RevAuto();
-//	m_smsgate_1.SetReadAndDel(TRUE);
+	m_smsgate_1.SetReadAndDel(TRUE);
 
 
 
@@ -557,7 +557,7 @@ void CDuanxinDlg::OnNewitem()
 	s_pv=0;
 	bstr_s_msg = s_msg.AllocSysString();//CString 对象的 AllocSysString 方法将 CString 转化成 BSTR
 	bstr_s_mobile = s_mobile.AllocSysString();
-//	m_smsgate_1.Sendsms(&bstr_s_msg,&bstr_s_mobile,&s_report,&s_pv);
+	m_smsgate_1.Sendsms(&bstr_s_msg,&bstr_s_mobile,&s_report,&s_pv);
 }
 
 //DEL void CDuanxinDlg::OnBeginlabeleditMytree(NMHDR* pNMHDR, LRESULT* pResult) 
@@ -704,7 +704,7 @@ void CDuanxinDlg::OnOnRecvMsgSmsgate1()
 	if (flg_receive_msg==0)//事件互斥
 	{
 		flg_receive_msg=1;
-//	VARIANT s_msg;
+	VARIANT s_msg;
 	CStringArray s_sa,s_message;//存储每条信息的3个字段,存储每条信息
 	int i=0,pos,message_counter=0;
  	CString a,b,buf;
@@ -713,11 +713,11 @@ void CDuanxinDlg::OnOnRecvMsgSmsgate1()
 	b.Format("%c",'\001');
 	
 		
-//		s_msg=m_smsgate_1.NewMsg();
+		s_msg=m_smsgate_1.NewMsg();
 
-	if(1)//s_msg.vt==VT_BSTR)
+	if(s_msg.vt==VT_BSTR)
 	{		
-//		s_newmessage=s_msg.bstrVal;//当前信息的全部内容
+		s_newmessage=s_msg.bstrVal;//当前信息的全部内容
 		while (1)//得到出发当前事件的信息的总条数
 		{
 			pos=s_newmessage.Find(b);
@@ -792,13 +792,13 @@ void CDuanxinDlg::OnOnRecvMsgSmsgate1()
 
 void CDuanxinDlg::OnDestroy() 
 {
-//	m_smsgate_1.ClosePort();
+	m_smsgate_1.ClosePort();
 	SysFreeString(bstr_s_mobile);
 	SysFreeString(bstr_s_msg);
 	CDialog::OnDestroy();
 	AfxPostQuitMessage(0);
 	// TODO: Add your message handler code here
-//	m_smsgate_1.ClosePort();
+	m_smsgate_1.ClosePort();
 }
 
 //DEL void CDuanxinDlg::OnDblclkList1() 
@@ -1579,18 +1579,18 @@ void CDuanxinDlg::OnConnectComport()
 	GetDlgItem(IDC_BUTTON9)->EnableWindow(TRUE);
 
 
-// 	m_smsgate_1.SetCommPort(m_comport.GetCurSel()+1);
+ 	m_smsgate_1.SetCommPort(m_comport.GetCurSel()+1);
 // 	m_smsgate_1.SetSmsService("+8613800290500");
 // 	m_smsgate_1.SetSettings("9600,n,8,1");
 	if (RevAuto_once_flag==0)
 	{
 		RevAuto_once_flag=1;
-//		m_smsgate_1.RevAuto();
+		m_smsgate_1.RevAuto();
 	}
  	
 // 	m_smsgate_1.SetReadAndDel(TRUE);
 	waittime=10;
-//	s_wait_time=m_smsgate_1.Connect(&waittime);
+	s_wait_time=m_smsgate_1.Connect(&waittime);
 
 
 	if(s_wait_time.vt==VT_BSTR)
@@ -1611,7 +1611,7 @@ void CDuanxinDlg::OnDisconnectComport()
 {
 	// TODO: Add your control notification handler code here
 	com_set_flag=0;
-//	m_smsgate_1.ClosePort();
+	m_smsgate_1.ClosePort();
 	m_com_openoff.SetIcon(m_hIconOff);
 	GetDlgItem(IDC_BUTTON9)->EnableWindow(FALSE);
 	GetDlgItem(IDC_BUTTON8)->EnableWindow(TRUE);

@@ -33,7 +33,7 @@ public:
 	CComboBox	m_comport;
 	CListBox	m_clistbox;
 	CTreeCtrl	m_ctrltree;
-//	C_Smsgate	m_smsgate_1;
+	C_Smsgate	m_smsgate_1;
 	CString	m_cscs_bsic;
 	CString	m_cscs_cid;
 	CString	m_cscs_lac;
