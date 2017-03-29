@@ -71,6 +71,10 @@ public:
 	CString	m_sqcs_hbdp;
 	CString	m_save_path;
 	CString	m_local_telnumber;
+	CString	m_sqcs_xhqd;
+	CString	m_sqcs_ratio;
+	CString	m_cscs_xhqd;
+	CString	m_cscs_ratio;
 	//}}AFX_DATA
 
 	// ClassWizard generated virtual function overrides

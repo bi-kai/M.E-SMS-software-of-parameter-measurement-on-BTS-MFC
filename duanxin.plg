@@ -6,24 +6,22 @@
 --------------------Configuration: duanxin - Win32 Release--------------------
 </h3>
 <h3>Command Lines</h3>
-Creating command line "rc.exe /l 0x804 /fo"Release/duanxin.res" /d "NDEBUG" "D:\vc\workspace\±¸·Ý\duanxin20120516\duanxin.rc"" 
-Creating temporary file "C:\Users\idol\AppData\Local\Temp\RSP33A5.tmp" with contents
+Creating temporary file "C:\Users\idol\AppData\Local\Temp\RSP1D9D.tmp" with contents
 [
 SkinPPWTL.lib /nologo /subsystem:windows /incremental:no /pdb:"Release/duanxin.pdb" /machine:I386 /out:"Release/duanxin.exe" 
-".\Release\_smsgate2.obj"
-".\Release\applicationexcel.obj"
-".\Release\duanxin.obj"
-".\Release\duanxinDlg.obj"
-".\Release\excel.obj"
-".\Release\msword.obj"
-".\Release\rangeexcel.obj"
-".\Release\shapesexcel.obj"
-".\Release\StdAfx.obj"
-".\Release\duanxin.res"
+.\Release\_smsgate2.obj
+.\Release\applicationexcel.obj
+.\Release\duanxin.obj
+.\Release\duanxinDlg.obj
+.\Release\excel.obj
+.\Release\msword.obj
+.\Release\rangeexcel.obj
+.\Release\shapesexcel.obj
+.\Release\StdAfx.obj
+.\Release\duanxin.res
 ]
-Creating command line "link.exe @C:\Users\idol\AppData\Local\Temp\RSP33A5.tmp"
+Creating command line "link.exe @C:\Users\idol\AppData\Local\Temp\RSP1D9D.tmp"
 <h3>Output Window</h3>
-Compiling resources...
 Linking...
 
 

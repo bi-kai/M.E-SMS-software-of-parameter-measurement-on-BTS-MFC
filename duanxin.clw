@@ -37,7 +37,7 @@ Type=0
 BaseClass=CDialog
 HeaderFile=duanxinDlg.h
 ImplementationFile=duanxinDlg.cpp
-LastObject=IDC_EDIT37
+LastObject=IDC_EDIT1
 Filter=D
 VirtualFilter=dWC
 
@@ -59,7 +59,7 @@ Control4=IDOK,button,1342373889
 [DLG:IDD_DUANXIN_DIALOG]
 Type=1
 Class=CDuanxinDlg
-ControlCount=87
+ControlCount=90
 Control1=IDC_NEWITEM,button,1342242816
 Control2=IDC_SMSGATE1,{45E0B554-4B72-439F-A552-BCC04D981B7C},1342242816
 Control3=IDC_LIST1,listbox,1352728833
@@ -147,4 +147,7 @@ Control84=IDC_EDIT37,edit,1484849280
 Control85=IDC_STATIC,static,1342308352
 Control86=IDC_EDIT38,edit,1484849280
 Control87=IDC_EDIT39,edit,1350633600
+Control88=IDC_STATIC,static,1342308352
+Control89=IDC_EDIT40,edit,1484849280
+Control90=IDC_EDIT41,edit,1350633600
 

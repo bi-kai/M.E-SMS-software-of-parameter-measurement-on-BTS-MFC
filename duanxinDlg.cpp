@@ -156,6 +156,10 @@ CDuanxinDlg::CDuanxinDlg(CWnd* pParent /*=NULL*/)
 	m_sqcs_hbdp = _T("");
 	m_save_path = _T("");
 	m_local_telnumber = _T("");
+	m_sqcs_xhqd = _T("");
+	m_sqcs_ratio = _T("");
+	m_cscs_xhqd = _T("");
+	m_cscs_ratio = _T("");
 	//}}AFX_DATA_INIT
 	// Note that LoadIcon does not require a subsequent DestroyIcon in Win32
 	m_hIcon = AfxGetApp()->LoadIcon(IDR_MAINFRAME);
@@ -207,6 +211,10 @@ void CDuanxinDlg::DoDataExchange(CDataExchange* pDX)
 	DDX_Text(pDX, IDC_EDIT30, m_sqcs_hbdp);
 	DDX_Text(pDX, IDC_EDIT36, m_save_path);
 	DDX_Text(pDX, IDC_EDIT37, m_local_telnumber);
+	DDX_Text(pDX, IDC_EDIT38, m_sqcs_xhqd);
+	DDX_Text(pDX, IDC_EDIT40, m_sqcs_ratio);
+	DDX_Text(pDX, IDC_EDIT39, m_cscs_xhqd);
+	DDX_Text(pDX, IDC_EDIT41, m_cscs_ratio);
 	//}}AFX_DATA_MAP
 }
 
@@ -329,6 +337,12 @@ BOOL CDuanxinDlg::OnInitDialog()
 		 m_sqcs_hbdp.ReleaseBuffer();
 		 ::GetPrivateProfileString("config_param","dianpingbizhi","unknown",m_sqcs_dpbz.GetBuffer(MAX_PATH),MAX_PATH,currentpath_buf_para);
 		 m_sqcs_dpbz.ReleaseBuffer();
+
+		 ::GetPrivateProfileString("config_param","xinhaoqiangdu","unknown",m_sqcs_xhqd.GetBuffer(MAX_PATH),MAX_PATH,currentpath_buf_para);
+		 m_sqcs_xhqd.ReleaseBuffer();
+		 ::GetPrivateProfileString("config_param","ratio","unknown",m_sqcs_ratio.GetBuffer(MAX_PATH),MAX_PATH,currentpath_buf_para);
+		 m_sqcs_ratio.ReleaseBuffer();
+
 		 ::GetPrivateProfileString("config_param","local_telnumber","unknown",m_local_telnumber.GetBuffer(MAX_PATH),MAX_PATH,currentpath_buf_para);
 		 m_local_telnumber.ReleaseBuffer();
 //		 ::GetPrivateProfileString("config_param","execute","unknown",execute_exe.GetBuffer(MAX_PATH),MAX_PATH,currentpath_buf_para);
@@ -374,6 +388,11 @@ BOOL CDuanxinDlg::OnInitDialog()
 			 }
 //			 AfxMessageBox(str_owner,MB_OK,0);
 		 } 
+		 m_csjsy = _T("");
+		 m_jzmc = _T("");
+		 m_save_path = _T("");
+		 m_txmc = _T("");
+		 m_bzxx=_T("");
 //		 ::WritePrivateProfileString("config_param","execute",execute_exe,currentpath_buf_para);
 		 /*************写入注册表，保存配置****************/
 		 //定义有关的 hKEY, 在程序的最后要关闭。
@@ -482,8 +501,14 @@ BOOL CDuanxinDlg::OnInitDialog()
 		 m_cscs_hbdp.ReleaseBuffer();
 		 ::GetPrivateProfileString(str1_list,"dianpingbizhi","unknown",m_cscs_dpbz.GetBuffer(MAX_PATH),MAX_PATH,currentpath_buf);
 		 m_cscs_dpbz.ReleaseBuffer();
+
+		 ::GetPrivateProfileString(str1_list,"xinhaoqiangdu","unknown",m_cscs_xhqd.GetBuffer(MAX_PATH),MAX_PATH,currentpath_buf);
+		 m_cscs_xhqd.ReleaseBuffer();
+		 ::GetPrivateProfileString(str1_list,"ratio","unknown",m_cscs_ratio.GetBuffer(MAX_PATH),MAX_PATH,currentpath_buf);
+		 m_cscs_ratio.ReleaseBuffer();
+
 		 ::GetPrivateProfileString(str1_list,"date","unknown",m_csrq.GetBuffer(MAX_PATH),MAX_PATH,currentpath_buf);
-		 m_cscs_dpbz.ReleaseBuffer();
+		 m_csrq.ReleaseBuffer();
 		 UpdateData(FALSE);
 	 /*******其他初始化参数*****************/
 	 m_clistbox.SetCurSel(0);
@@ -815,7 +840,7 @@ void CDuanxinDlg::splitMessage()//对每条信息的核心内容的处理
 	divide_flag.Format("%c",'\053');
 //	m_clistbox.InsertString(0,message_data);
 	int rightmessage_flag=0;
-	bool CID_exist_flag=0;//BSIC码是否存在于列表中的标志位
+	bool CID_exist_flag=0;//CID码是否存在于列表中的标志位
 	while(1)
 	{
 	pos1=message_data.Find(divide_flag);
@@ -835,7 +860,7 @@ void CDuanxinDlg::splitMessage()//对每条信息的核心内容的处理
 		{
 			
 			m_cscs_cid=s_message1.GetAt(p1);
-/****************检查新到达的信息的CID码是否存在于列表中***********************************/
+/********检查新到达的信息的CID码是否存在于列表中*****************/
 			for (int ii=0;ii<data_data.GetSize();ii++)
 			{
 				if (m_cscs_cid==data_data.GetAt(ii))
@@ -854,78 +879,87 @@ void CDuanxinDlg::splitMessage()//对每条信息的核心内容的处理
 		}
 		else if (p1==1)
 		{
-
 			m_cscs_bsic=s_message1.GetAt(p1);
 			rightmessage_flag+=1;//处理掉垃圾短信
 		}
 		else if (p1==2)
 		{
-			m_cscs_lac=s_message1.GetAt(p1);
+			m_cscs_txgg=s_message1.GetAt(p1);//m_cscs_lac
 			rightmessage_flag+=1;//处理掉垃圾短信
 		} 
 		else if(p1==3)
 		{
-			m_cscs_pd=s_message1.GetAt(p1);
+			m_cscs_hbdp=s_message1.GetAt(p1);//m_cscs_pd
 			rightmessage_flag+=1;//处理掉垃圾短信
 		}
 		else if (p1==4)
 		{
-			m_cscs_jd=s_message1.GetAt(p1);
+			m_cscs_dmhb=s_message1.GetAt(p1);//m_cscs_jd
 			rightmessage_flag+=1;//处理掉垃圾短信
 		}
 		else if (p1==5)
 		{
-			m_cscs_wd=s_message1.GetAt(p1);
+			m_cscs_pd=s_message1.GetAt(p1);//m_cscs_wd
 			rightmessage_flag+=1;//处理掉垃圾短信
 		}
 		else if (p1==6)
 		{
-			m_cscs_fxj=s_message1.GetAt(p1);
+			m_cscs_qbdp=s_message1.GetAt(p1);//m_cscs_fxj
 			rightmessage_flag+=1;//处理掉垃圾短信
 		}
 		else if (p1==7)
 		{
-			m_cscs_qj=s_message1.GetAt(p1);
+			m_cscs_fxj=s_message1.GetAt(p1);//m_cscs_qj
 			rightmessage_flag+=1;//处理掉垃圾短信
 		}
 		else if (p1==8)
 		{
-			m_cscs_hgj=s_message1.GetAt(p1);
+			m_cscs_txhb=s_message1.GetAt(p1);//m_cscs_hgj
 			rightmessage_flag+=1;//处理掉垃圾短信
 		}
 		else if (p1==9)
 		{
-			m_cscs_dmhb=s_message1.GetAt(p1);
+			m_cscs_lac=s_message1.GetAt(p1);//m_cscs_dmhb
 			rightmessage_flag+=1;//处理掉垃圾短信
 		}
 		else if (p1==10)
 		{
-			m_cscs_txhb=s_message1.GetAt(p1);
+			m_cscs_wd=s_message1.GetAt(p1);//m_cscs_txhb
 			rightmessage_flag+=1;//处理掉垃圾短信
 		}
 		else if (p1==11)
 		{
-			m_cscs_txgg=s_message1.GetAt(p1);
+			m_cscs_dpbz=s_message1.GetAt(p1);//m_cscs_txgg
 			rightmessage_flag+=1;//处理掉垃圾短信
 		}
 		else if (p1==12)
 		{
-			m_cscs_qbdp=s_message1.GetAt(p1);
+			m_cscs_jd=s_message1.GetAt(p1);//m_cscs_qbdp
 			rightmessage_flag+=1;//处理掉垃圾短信
 		}
 		else if (p1==13)
 		{
-			m_cscs_hbdp=s_message1.GetAt(p1);
+			m_cscs_qj=s_message1.GetAt(p1);//m_cscs_hbdp
+			rightmessage_flag+=1;//处理掉垃圾短信
+		}
+		else if (p1==14)
+		{
+			m_cscs_hgj=s_message1.GetAt(p1);
+			rightmessage_flag+=1;//处理掉垃圾短信
+		}
+		else if (p1==15)
+		{
+			m_cscs_xhqd=s_message1.GetAt(p1);
 			rightmessage_flag+=1;//处理掉垃圾短信
 		}
 
 		message_counter1++;
 		p1++;
 	}
-	else if(rightmessage_flag==14)//最后一个分段
+	else if(rightmessage_flag==16)//最后一个分段
 	{
 		s_message1.Add(message_data);
-		m_cscs_dpbz=s_message1.GetAt(p1);
+		m_cscs_ratio=s_message1.GetAt(p1);
 //		UpdateData(FALSE);//人工查看，不要自动刷新数值
 		message_counter1++;
 		p1++;
@@ -957,6 +991,10 @@ void CDuanxinDlg::saveMessage()
 	::WritePrivateProfileString(m_cscs_cid,"qianbandianping",m_cscs_qbdp,currentpath_buf);
 	::WritePrivateProfileString(m_cscs_cid,"houbandianping",m_cscs_hbdp,currentpath_buf);
 	::WritePrivateProfileString(m_cscs_cid,"dianpingbizhi",m_cscs_dpbz,currentpath_buf);
+
+	::WritePrivateProfileString(m_cscs_cid,"xinhaoqiangdu",m_cscs_xhqd,currentpath_buf);
+	::WritePrivateProfileString(m_cscs_cid,"ratio",m_cscs_ratio,currentpath_buf);
+
 	::WritePrivateProfileString(m_cscs_cid,"date",m_csrq,currentpath_buf);
 
 }
@@ -1016,8 +1054,14 @@ void CDuanxinDlg::OnSelchangeList1()
 		m_cscs_hbdp.ReleaseBuffer();
 		::GetPrivateProfileString(str1,"dianpingbizhi","unknown",m_cscs_dpbz.GetBuffer(MAX_PATH),MAX_PATH,currentpath_buf);
 		m_cscs_dpbz.ReleaseBuffer();
-		::GetPrivateProfileString(str1,"date","unknown",m_csrq.GetBuffer(MAX_PATH),MAX_PATH,currentpath_buf);
+
+		::GetPrivateProfileString(str1,"xinhaoqiangdu","unknown",m_cscs_xhqd.GetBuffer(MAX_PATH),MAX_PATH,currentpath_buf);
 		m_cscs_dpbz.ReleaseBuffer();
+		::GetPrivateProfileString(str1,"ratio","unknown",m_cscs_ratio.GetBuffer(MAX_PATH),MAX_PATH,currentpath_buf);
+		m_cscs_dpbz.ReleaseBuffer();
+
+		::GetPrivateProfileString(str1,"date","unknown",m_csrq.GetBuffer(MAX_PATH),MAX_PATH,currentpath_buf);
+		m_csrq.ReleaseBuffer();
 		UpdateData(FALSE);
 
 	}
@@ -1178,6 +1222,10 @@ if (modify_flag==0)
 		GetDlgItem(IDC_EDIT29)->EnableWindow(TRUE);
 		GetDlgItem(IDC_EDIT30)->EnableWindow(TRUE);
 		GetDlgItem(IDC_EDIT31)->EnableWindow(TRUE);
+		
+		GetDlgItem(IDC_EDIT38)->EnableWindow(TRUE);
+		GetDlgItem(IDC_EDIT40)->EnableWindow(TRUE);
+
 		GetDlgItem(IDC_EDIT37)->EnableWindow(TRUE);
 	} 
 	else
@@ -1199,6 +1247,10 @@ if (modify_flag==0)
 		GetDlgItem(IDC_EDIT29)->EnableWindow(FALSE);
 		GetDlgItem(IDC_EDIT30)->EnableWindow(FALSE);
 		GetDlgItem(IDC_EDIT31)->EnableWindow(FALSE);
+
+		GetDlgItem(IDC_EDIT38)->EnableWindow(FALSE);
+		GetDlgItem(IDC_EDIT40)->EnableWindow(FALSE);
+
 		GetDlgItem(IDC_EDIT37)->EnableWindow(FALSE);
 		UpdateData(TRUE);
 
@@ -1217,6 +1269,8 @@ if (modify_flag==0)
 		::WritePrivateProfileString("config_param","qianbandianping",m_sqcs_qbdp,currentpath_buf_para);
 		::WritePrivateProfileString("config_param","houbandianping",m_sqcs_hbdp,currentpath_buf_para);
 		::WritePrivateProfileString("config_param","dianpingbizhi",m_sqcs_dpbz,currentpath_buf_para);
+		::WritePrivateProfileString("config_param","xinhaoqiangdu",m_sqcs_xhqd,currentpath_buf_para);
+		::WritePrivateProfileString("config_param","ratio",m_sqcs_ratio,currentpath_buf_para);
 		::WritePrivateProfileString("config_param","local_telnumber",m_local_telnumber,currentpath_buf_para);
 	}
 }
@@ -1305,21 +1359,23 @@ void CDuanxinDlg::OnAnalysisiReport()
 	str_array.Add("项目名称");str_array.Add("申请参数");str_array.Add("测试参数");
 	str_array.Add("基站名称:");str_array.Add(m_jzmc);
 	str_array.Add("天线名称:");str_array.Add(m_txmc);
-	str_array.Add("BSIC");str_array.Add(m_sqcs_bsic);str_array.Add(m_cscs_bsic);
 	str_array.Add("CID");str_array.Add(m_sqcs_cid);str_array.Add(m_cscs_cid);
-	str_array.Add("LAC");str_array.Add(m_sqcs_lac);str_array.Add(m_cscs_lac);
+	str_array.Add("BSIC");str_array.Add(m_sqcs_bsic);str_array.Add(m_cscs_bsic);
+	str_array.Add("天线编号");str_array.Add(m_sqcs_txgg);str_array.Add(m_cscs_txgg);
+	str_array.Add("后瓣电平");str_array.Add(m_sqcs_hbdp);str_array.Add(m_cscs_hbdp);
+	str_array.Add("电子下倾角");str_array.Add(m_sqcs_dmhb);str_array.Add(m_cscs_dmhb);
 	str_array.Add("频段");str_array.Add(m_sqcs_pd);str_array.Add(m_cscs_pd);
-	str_array.Add("经度");str_array.Add(m_sqcs_jd);str_array.Add(m_cscs_jd);
-	str_array.Add("纬度");str_array.Add(m_sqcs_wd);str_array.Add(m_cscs_wd);
+	str_array.Add("前瓣电平");str_array.Add(m_sqcs_qbdp);str_array.Add(m_cscs_qbdp);
 	str_array.Add("方向角");str_array.Add(m_sqcs_fxj);str_array.Add(m_cscs_fxj);
+	str_array.Add("天线海拔");str_array.Add(m_sqcs_txhb);str_array.Add(m_cscs_txhb);	
+	str_array.Add("LAC");str_array.Add(m_sqcs_lac);str_array.Add(m_cscs_lac);
+	str_array.Add("纬度");str_array.Add(m_sqcs_wd);str_array.Add(m_cscs_wd);
+	str_array.Add("电平比值");str_array.Add(m_sqcs_dpbz);str_array.Add(m_cscs_dpbz);
+	str_array.Add("经度");str_array.Add(m_sqcs_jd);str_array.Add(m_cscs_jd);	
 	str_array.Add("倾角");str_array.Add(m_sqcs_qj);str_array.Add(m_cscs_qj);
 	str_array.Add("横滚角");str_array.Add(m_sqcs_hgj);str_array.Add(m_cscs_hgj);
-	str_array.Add("地面海拔");str_array.Add(m_sqcs_dmhb);str_array.Add(m_cscs_dmhb);
-	str_array.Add("天线海拔");str_array.Add(m_sqcs_txhb);str_array.Add(m_cscs_txhb);
-	str_array.Add("天线挂高");str_array.Add(m_sqcs_txgg);str_array.Add(m_cscs_txgg);
-	str_array.Add("前瓣电平");str_array.Add(m_sqcs_qbdp);str_array.Add(m_cscs_qbdp);
-	str_array.Add("后瓣电平");str_array.Add(m_sqcs_hbdp);str_array.Add(m_cscs_hbdp);
-	str_array.Add("电平比值");str_array.Add(m_sqcs_dpbz);str_array.Add(m_cscs_dpbz);
+	str_array.Add("信号强度");str_array.Add(m_sqcs_xhqd);str_array.Add(m_cscs_xhqd);
+	str_array.Add("ratio");str_array.Add(m_sqcs_ratio);str_array.Add(m_cscs_ratio);
 
 	_Application app;
 	COleVariant vTrue((short)TRUE),	vFalse((short)FALSE);
@@ -1343,7 +1399,7 @@ void CDuanxinDlg::OnAnalysisiReport()
 	_Document saveDoc=app.GetActiveDocument();
 	Tables tables=saveDoc.GetTables();
 	CComVariant defaultBehavior(1),AutoFitBehavior(1);
-	tables.Add(sel.GetRange(),21,4,&defaultBehavior,&AutoFitBehavior);
+	tables.Add(sel.GetRange(),23,4,&defaultBehavior,&AutoFitBehavior);
 	Table table=tables.Item(1);
 	/*************表格********************************/
 	Cell c1=table.Cell(2,3);/***第二行***/
@@ -1360,16 +1416,16 @@ void CDuanxinDlg::OnAnalysisiReport()
 		c3.ReleaseDispatch();
 	}
 	
-	for (i=5;i<20;i++)
+	for (i=5;i<22;i++)
 	{
-		c1=table.Cell(i,3);/***第5~19行***/
+		c1=table.Cell(i,3);/***第5~21行***/
 		c2=table.Cell(i,4);
 		c1.Merge(c2);
 	}
 	
-	for (i=20;i<=21;i++)
+	for (i=22;i<=23;i++)
 	{
-		c1=table.Cell(i,2);/***第20,21行***/
+		c1=table.Cell(i,2);/***第22,23行***/
 		c2=table.Cell(i,3);
 		Cell c3=table.Cell(i,4);
 		c1.Merge(c2);
@@ -1395,7 +1451,8 @@ void CDuanxinDlg::OnAnalysisiReport()
 	sel.MoveRight(COleVariant((short)1),COleVariant(short(1)),COleVariant(short(0)));	
 	/********************插入图片**************************/
 	sel.TypeText(_T("基站图片"));
-	if((browse_flag==1)&&(finded_bmp_flag==1))
+
+	if((browse_flag==1)||(finded_bmp_flag==1))
 	{
 		InlineShapes inlineshapes = sel.GetInlineShapes();
 		CString picture1=strFileName;
@@ -1447,6 +1504,8 @@ void CDuanxinDlg::OnAnalysisiReport()
 	excel_strarray.Add("A18");excel_strarray.Add("B18");excel_strarray.Add("C18");
 	excel_strarray.Add("A19");excel_strarray.Add("B19");excel_strarray.Add("C19");
 	excel_strarray.Add("A20");excel_strarray.Add("B20");excel_strarray.Add("C20");
+	excel_strarray.Add("A21");excel_strarray.Add("B21");excel_strarray.Add("C21");
+	excel_strarray.Add("A22");excel_strarray.Add("B22");excel_strarray.Add("C22");
 
 	if( !app_excel.CreateDispatch("Excel.Application")){
 		this->MessageBox("无法创建Excel应用！");
@@ -1470,14 +1529,14 @@ void CDuanxinDlg::OnAnalysisiReport()
 	range.SetValue2(COleVariant("天线姿态测试分析报告"));//设置标题
 
 	CString bzxx_excel_tmp="备注信息:"+m_bzxx;
-	range=sheet.GetRange(COleVariant("A21"),COleVariant("A21"));//选择工作表中A1:A1单元格区域
+	range=sheet.GetRange(COleVariant("A23"),COleVariant("A23"));//选择工作表中A1:A1单元格区域
 	range.SetValue2(COleVariant(bzxx_excel_tmp));//备注信息
 	/********************插入图片**************************/
-	if((browse_flag==1)&&(finded_bmp_flag==1))
+	if((browse_flag==1)||(finded_bmp_flag==1))
 	{
 	Shapesexcel shapesexcel=sheet.GetShapes();//从Sheet对象上获得一个Shapes 
 	CString picture2=strFileName;
-	range=sheet.GetRange(COleVariant(_T("A22")),COleVariant(_T("H28")));    // 获得Range对象，用来插入图片
+	range=sheet.GetRange(COleVariant(_T("A28")),COleVariant(_T("H28")));    // 获得Range对象，用来插入图片
 	shapesexcel.AddPicture(_T(picture2),false,true,0, 300,400, 300);
 	}
 /****************************循环填入内容（结束）***************************************/	
@@ -1763,12 +1822,14 @@ void CDuanxinDlg::OnTestReport()
 	str_array.Add("方向角");str_array.Add(m_cscs_fxj);
 	str_array.Add("倾角");str_array.Add(m_cscs_qj);
 	str_array.Add("横滚角");str_array.Add(m_cscs_hgj);
-	str_array.Add("地面海拔");str_array.Add(m_cscs_dmhb);
+	str_array.Add("电子下倾角");str_array.Add(m_cscs_dmhb);
 	str_array.Add("天线海拔");str_array.Add(m_cscs_txhb);
-	str_array.Add("天线挂高");str_array.Add(m_cscs_txgg);
+	str_array.Add("天线编号");str_array.Add(m_cscs_txgg);
 	str_array.Add("前瓣电平");str_array.Add(m_cscs_qbdp);
 	str_array.Add("后瓣电平");str_array.Add(m_cscs_hbdp);
 	str_array.Add("电平比值");str_array.Add(m_cscs_dpbz);
+	str_array.Add("信号强度");str_array.Add(m_cscs_xhqd);
+	str_array.Add("ratio");str_array.Add(m_cscs_ratio);
 
 	_Application app;
 	COleVariant vTrue((short)TRUE),	vFalse((short)FALSE);
@@ -1792,13 +1853,13 @@ void CDuanxinDlg::OnTestReport()
 	_Document saveDoc=app.GetActiveDocument();
 	Tables tables=saveDoc.GetTables();
 	CComVariant defaultBehavior(1),AutoFitBehavior(1);
-	tables.Add(sel.GetRange(),21,4,&defaultBehavior,&AutoFitBehavior);
+	tables.Add(sel.GetRange(),23,4,&defaultBehavior,&AutoFitBehavior);
 	Table table=tables.Item(1);
 	/*************表格********************************/
 	Cell c1=table.Cell(2,3);/***第二行***/
 	Cell c2=table.Cell(2,4);
 	
-	for(int i=2;i<20;i++)
+	for(int i=2;i<22;i++)
 	{
 		c1=table.Cell(i,2);/***第3,4行***/
 		c2=table.Cell(i,3);
@@ -1808,7 +1869,7 @@ void CDuanxinDlg::OnTestReport()
 		c3.ReleaseDispatch();
 	}
 	
-	for (i=20;i<=21;i++)
+	for (i=22;i<=23;i++)
 	{
 		c1=table.Cell(i,2);/***第20,21行***/
 		c2=table.Cell(i,3);
@@ -1836,7 +1897,7 @@ void CDuanxinDlg::OnTestReport()
 	sel.MoveRight(COleVariant((short)1),COleVariant(short(1)),COleVariant(short(0)));	
 	/********************插入图片**************************/
 	sel.TypeText(_T("基站图片"));
-	if((browse_flag==1)&&(finded_bmp_flag==1))
+	if((browse_flag==1)||(finded_bmp_flag==1))
 	{
 		InlineShapes inlineshapes = sel.GetInlineShapes();
 		CString picture1=strFileName;
@@ -1888,6 +1949,8 @@ void CDuanxinDlg::OnTestReport()
 	excel_strarray.Add("A18");excel_strarray.Add("B18");
 	excel_strarray.Add("A19");excel_strarray.Add("B19");
 	excel_strarray.Add("A20");excel_strarray.Add("B20");
+	excel_strarray.Add("A21");excel_strarray.Add("B21");
+	excel_strarray.Add("A22");excel_strarray.Add("B22");
 
 	if( !app_excel.CreateDispatch("Excel.Application")){
 		this->MessageBox("无法创建Excel应用！");
@@ -1911,14 +1974,14 @@ void CDuanxinDlg::OnTestReport()
 	range.SetValue2(COleVariant("天线姿态测试分析报告"));//设置标题
 
 	CString bzxx_excel_tmp="备注信息:"+m_bzxx;
-	range=sheet.GetRange(COleVariant("A21"),COleVariant("A21"));//选择工作表中A1:A1单元格区域
+	range=sheet.GetRange(COleVariant("A23"),COleVariant("A23"));//选择工作表中A1:A1单元格区域
 	range.SetValue2(COleVariant(bzxx_excel_tmp));//备注信息
 	/********************插入图片**************************/
-	if((browse_flag==1)&&(finded_bmp_flag==1))
+	if((browse_flag==1)||(finded_bmp_flag==1))
 	{
 	Shapesexcel shapesexcel=sheet.GetShapes();//从Sheet对象上获得一个Shapes 
 	CString picture2=strFileName;
-	range=sheet.GetRange(COleVariant(_T("A22")),COleVariant(_T("H28")));    // 获得Range对象，用来插入图片
+	range=sheet.GetRange(COleVariant(_T("A24")),COleVariant(_T("H29")));    // 获得Range对象，用来插入图片
 	shapesexcel.AddPicture(_T(picture2),false,true,0, 300,400, 300);
 	}
 /****************************循环填入内容（结束）***************************************/	
